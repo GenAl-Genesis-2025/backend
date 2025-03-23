@@ -12,7 +12,7 @@ const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemi
 
 // Generate follow-up questions using Gemini REST API
 async function generateFollowUpQuestions(userQuery) {
-    const prompt = `You are an AI expert in finance and cryptocurrency scams. Your task is to analyze crypto projects and determine if they are likely scams. Given the user query: "${userQuery}", generate a list of follow-up questions to gather more information about the project and its creators. Follow-up questions:`;
+    const prompt = `Max 400 characters. You are an AI expert in finance and cryptocurrency scams. Your task is to analyze crypto projects and determine if they are likely scams. Given the user query: "${userQuery}", generate a list of follow-up questions to gather more information about the project and its creators. Follow-up questions:`;
     
     const response = await axios.post(GEMINI_URL, {
         contents: [{
@@ -74,8 +74,11 @@ function removePercentage(analysis) {
 
 // Analyze crypto project
 async function analyzeCryptoProject(userQuery) {
+    console.log("Creating follow up questions...");
     const followUpQuestions = await generateFollowUpQuestions(userQuery);
+    console.log("Searching the web...");
     const followUpAnswers = await searchTavilyForAnswers(followUpQuestions);
+    console.log("Doing final analysis...");
     const finalAnalysis = await generateFinalAnalysis(userQuery, followUpAnswers);
 
     // Extract the percentage likelihood
@@ -114,9 +117,6 @@ async function storeAnalysisInDb(result) {
 
 // Main function
 async function main() {
-    const userQuery = "Is Trump Coin a scam?"; // Replace with user query from database
-    const result = await analyzeCryptoProject(userQuery);
-    await storeAnalysisInDb(result);
 }
 
 // Run the script
