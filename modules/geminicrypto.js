@@ -45,7 +45,14 @@ async function searchTavilyForAnswers(followUpQuestions) {
 
 // Generate final analysis using Gemini REST API
 async function generateFinalAnalysis(userQuery, followUpAnswers) {
-    const prompt = `You are an AI expert in finance and cryptocurrency scams. Your task is to analyze crypto projects and determine if they are likely scams. Given the user query: "${userQuery}" and the following information: ${JSON.stringify(followUpAnswers)}, provide a brief, but correct, analysis of whether the crypto project is likely a scam or not. Include some evidence and reasoning. Also include as a percent from 0%-100% how likely the crypto project is to be a scam.`;
+    const prompt = `You are an AI expert in finance and cryptocurrency scams. Your task is to analyze crypto projects and determine if they are likely scams. Given the user query: "${userQuery}" and the following information: ${JSON.stringify(followUpAnswers)}, provide a clear, concise, and human-friendly analysis of whether the crypto project is likely a scam or not. Follow these guidelines:
+1. Start with a brief summary of your findings.
+2. Provide evidence and reasoning to support your conclusion.
+3. Use simple, non-technical language that is easy for clients to understand.
+4. End with a percentage (0%-100%) indicating how likely the project is to be a scam.
+5. Offer actionable advice or next steps for the client.
+
+Write the analysis as if you are explaining it to a non-expert client.`;
 
     const response = await axios.post(GEMINI_URL, {
         contents: [{
