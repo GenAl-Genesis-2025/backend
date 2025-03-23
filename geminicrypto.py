@@ -16,7 +16,7 @@ TAVILY_API_KEY = userdata.get("TAVILY_TOKEN")
 # Generate the follow-up questions based on the query with prompt engineering
 def generate_follow_up_questions(user_query):
     prompt = f"""
-    You are an AI expert in finance and cryptocurrency scams. Your task is to analyze crypto projects and determine if they are likely scams. Given the user query: \"{user_query}\", generate a single follow-up question to gather more information about the project and its creators.
+    You are an AI expert in finance and cryptocurrency scams. Your task is to analyze crypto projects and determine if they are likely scams. Given the user query: \"{user_query}\", generate a list of follow-up questions to gather more information about the project and its creators.
     Follow-up questions:
     """
     # I AM CHANGING THIS TO ONLY ONE QUESTION FOR TESTING PURPOSES ("generate a list of follow-up questions")
@@ -33,8 +33,8 @@ def search_tavily_for_answers(follow_up_questions):
             payload = {
                 "api_key": TAVILY_API_KEY,
                 "query": question.strip(),
-                "max_results": 1,  # Limit to top 5 results
-                "search_depth": "basic"  # Use advanced search for deeper results
+                "max_results": 5,  # Limit to top 5 results
+                "search_depth": "advanced"  # Use advanced search for deeper results
             }
             response = requests.post(url, json=payload)
             answers[question.strip()] = response.json()
