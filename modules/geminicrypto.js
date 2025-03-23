@@ -61,7 +61,6 @@ async function analyzeCryptoProject(userQuery) {
     const followUpQuestions = await generateFollowUpQuestions(userQuery);
     const followUpAnswers = await searchTavilyForAnswers(followUpQuestions);
     const finalAnalysis = await generateFinalAnalysis(userQuery, followUpAnswers);
-
     return {
         userQuery,
         followUpQuestions,
@@ -97,4 +96,5 @@ async function main() {
 }
 
 // Run the script
+module.exports = analyzeCryptoProject;
 main().catch(console.error);
