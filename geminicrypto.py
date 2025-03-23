@@ -7,7 +7,7 @@ from datetime import datetime
 from google.colab import userdata
 
 #load gemini
-GEMINI_API_KEY = userdata.get("GEMINI_API_KEY")
+GEMINI_API_KEY = "AIzaSyAbmc9-CBtgF9yHtxSFT5gAwiLBKcggQV8"
 genai.configure(api_key=GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-2.0-flash')
 
