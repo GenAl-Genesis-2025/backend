@@ -66,7 +66,7 @@ Write the analysis as if you are explaining it to a non-expert client.`;
 // Extract the percentage likelihood from the analysis text
 function extractPercentage(analysis) {
     // Use regex to find a percentage (e.g., "50%", "75%")
-    const percentageMatch = analysis.match(/\b(\d{1,3})%\b/);
+    const percentageMatch = analysis.match(/(\d+)(?:\s*)%/);
     if (percentageMatch) {
         return parseInt(percentageMatch[1], 10); // Convert to integer
     }
@@ -127,5 +127,5 @@ async function main() {
 }
 
 // Run the script
-module.exports = analyzeCryptoProject;
+module.exports = {analyzeCryptoProject, extractPercentage};
 main().catch(console.error);
