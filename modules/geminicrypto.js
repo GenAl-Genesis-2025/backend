@@ -56,16 +56,40 @@ async function generateFinalAnalysis(userQuery, followUpAnswers) {
     return response.data.candidates[0].content.parts[0].text.trim();
 }
 
+// Extract the percentage likelihood from the analysis text
+function extractPercentage(analysis) {
+    // Use regex to find a percentage (e.g., "50%", "75%")
+    const percentageMatch = analysis.match(/\b(\d{1,3})%\b/);
+    if (percentageMatch) {
+        return parseInt(percentageMatch[1], 10); // Convert to integer
+    }
+    return null; // Return null if no percentage is found
+}
+
+// Remove the percentage from the analysis text
+function removePercentage(analysis) {
+    // Use regex to remove the percentage (e.g., "50%", "75%")
+    return analysis.replace(/\b(\d{1,3})%\b/, "").trim();
+}
+
 // Analyze crypto project
 async function analyzeCryptoProject(userQuery) {
     const followUpQuestions = await generateFollowUpQuestions(userQuery);
     const followUpAnswers = await searchTavilyForAnswers(followUpQuestions);
     const finalAnalysis = await generateFinalAnalysis(userQuery, followUpAnswers);
+
+    // Extract the percentage likelihood
+    const scamLikelihood = extractPercentage(finalAnalysis);
+
+    // Remove the percentage from the analysis text
+    const analysisWithoutPercentage = removePercentage(finalAnalysis);
+
     return {
         userQuery,
         followUpQuestions,
         followUpAnswers,
-        finalAnalysis
+        finalAnalysis: analysisWithoutPercentage, // Analysis without the percentage
+        scamLikelihood // Percentage likelihood as a separate field
     };
 }
 
