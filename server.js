@@ -4,6 +4,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Query = require('./models/query');
+const analyzeCryptoProject = require('./modules/geminicrypto');
 
 const app = express();
 const PORT = 5001;
@@ -19,25 +20,29 @@ mongoose.connect(process.env.MONGO_URI, {
   .catch(err => console.error('MongoDB connection error:', err));
 
 // getting the user query and sending it to the database
-app.get('/api/setUserQuery', async (req, res) => {
-    try {
-        const newQuery = new Query({
-            nameOfCryptoCoin: req.query.text,
-            typeOfQuery: 'user_input',
-        });
+app.post('/api/setUserQuery', async (req, res) => {
+    console.log("successfully connected");
+    const output = await analyzeCryptoProject(req.body.text);
+    console.log(output.finalAnalysis);
+    res.json({message: output.finalAnalysis});
+    // try {
+    //     const newQuery = new Query({
+    //         nameOfCryptoCoin: req.query.text,
+    //         typeOfQuery: 'user_input',
+    //     });
         
-        const savedQuery = await newQuery.save();
-        res.json({ 
-            message: 'Query saved',
-            data: savedQuery 
-        });
-    } catch (error) {
-        res.status(500).json({ 
-            message: 'Error saving query',
-            error: error.message 
-        });
-    }
-    console.log(req.query.text);
+    //     const savedQuery = await newQuery.save();
+    //     res.json({ 
+    //         message: 'Query saved',
+    //         data: savedQuery 
+    //     });
+    // } catch (error) {
+    //     res.status(500).json({ 
+    //         message: 'Error saving query',
+    //         error: error.message 
+    //     });
+    // }
+    console.log(req.body.text);
 });
 
 app.post('/api/data', (req, res) => {
