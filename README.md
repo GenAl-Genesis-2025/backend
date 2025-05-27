@@ -8,7 +8,7 @@
 npm install
 node server.js
 ```
-4. Use the front end to interact with the application. https://genal-genesis-2025.github.io/Frontend-of-ScamGuardAINEW/main.html
+4. Use the front end to interact with the application. https://frontend-of-scam-guard-ainew.vercel.app/
 
 🚀 Overview
 Laplace’s Demon AI is an innovative tool designed to analyze live crypto data using AI. The project leverages:
